@@ -1,0 +1,64 @@
+<div class="page-content">
+	<div class="space-6"></div>
+	<div class="space-6"></div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-6">
+					<h4>SERVICIOS</h4>
+					<ul class="list-group">
+					  <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="data in datos">
+					    {{data.servicio}}
+					    <span class="badge badge-primary badge-pill" ng-click="llamar(data.id)"><i class="ace-icon fa fa-map-marker bigger-110 icon-only"></i></span>
+					  </li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6">
+					<h4>NOTIFICACIONES <span class="badge badge-primary badge-pill">0</span></h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="myModal">
+    <div class="modal-dialog modal-sm">
+      	<div class="modal-content">
+	        <div class="table-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="white">&times;</span>
+				</button>
+				Confirmación!
+			</div>
+        	<br />
+
+	        <form class="form-horizontal" name="form_registro" id="form_registro">
+	        	<div class="row">
+					<div class="form-group">
+						<label class="control-label col-sm-4 no-padding-right">Descripción:</label>
+						<div class="col-sm-7">
+							<div class="input-group">
+								<input type="text" id="descripcion" name="descripcion" class="form-control" />
+							</div>
+						</div>
+					</div>
+	        	</div>
+	        </form>
+	        
+			<br />
+	        <div class="modal-footer no-margin-top">
+				<button class="btn btn-sm btn-danger pull-left" data-dismiss="modal" data-toggle="tooltip" title="Cerrar ventana">
+					<i class="ace-icon fa fa-times"></i>
+					Cancelar
+				</button>
+				<button ng-click="enviar()" class="btn btn-sm btn-primary pull-right" data-toggle="tooltip" title="Enviar Servicio">
+					<i class="ace-icon fa fa-check"></i>
+					Aceptar
+				</button>
+			</div>
+      	</div>
+    </div>
+</div>
+

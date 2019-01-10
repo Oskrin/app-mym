@@ -1,0 +1,2701 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.19
+-- Dumped by pg_dump version 9.1.19
+-- Started on 2018-08-03 13:05:15
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 215 (class 3079 OID 11639)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2299 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 206 (class 1259 OID 235701)
+-- Dependencies: 6
+-- Name: accesos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE accesos (
+    id integer NOT NULL,
+    id_usuario integer,
+    nombre_equipo text,
+    estado text,
+    fecha_creacion time with time zone
+);
+
+
+ALTER TABLE public.accesos OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 243908)
+-- Dependencies: 6
+-- Name: auditoria; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auditoria (
+    usuario_id integer,
+    host character varying(60) NOT NULL,
+    entidad character varying(60) NOT NULL,
+    proceso character varying(20) NOT NULL,
+    actual_value text,
+    new_values text,
+    old_values text,
+    entidad_id integer NOT NULL,
+    fecha timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.auditoria OWNER TO postgres;
+
+--
+-- TOC entry 161 (class 1259 OID 227486)
+-- Dependencies: 6
+-- Name: bodegas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE bodegas (
+    id integer NOT NULL,
+    nombre_bodega text,
+    ubicacion_bodega text,
+    telefono_bodega text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.bodegas OWNER TO postgres;
+
+--
+-- TOC entry 162 (class 1259 OID 227492)
+-- Dependencies: 6
+-- Name: cargos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cargos (
+    id integer NOT NULL,
+    nombre_cargo text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.cargos OWNER TO postgres;
+
+--
+-- TOC entry 163 (class 1259 OID 227498)
+-- Dependencies: 6
+-- Name: categorias; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE categorias (
+    id integer NOT NULL,
+    nombre_categoria text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.categorias OWNER TO postgres;
+
+--
+-- TOC entry 164 (class 1259 OID 227504)
+-- Dependencies: 6
+-- Name: chat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE chat (
+    id integer NOT NULL,
+    id_usuario integer,
+    mensaje text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.chat OWNER TO postgres;
+
+--
+-- TOC entry 165 (class 1259 OID 227510)
+-- Dependencies: 6
+-- Name: clientes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE clientes (
+    id integer NOT NULL,
+    id_tipo_documento integer,
+    identificacion text,
+    razon_social text,
+    nombre_comercial text,
+    telefono1 text,
+    telefono2 text,
+    ciudad text,
+    direccion text,
+    correo text,
+    cupo text,
+    imagen text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+)
+WITH (autovacuum_enabled=true);
+
+
+ALTER TABLE public.clientes OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 260253)
+-- Dependencies: 6
+-- Name: cuentas_cobrar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cuentas_cobrar (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_factura_venta integer,
+    fecha_credito text,
+    tiempo text,
+    plazo text,
+    monto_factura text,
+    saldo_factura text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.cuentas_cobrar OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 309440)
+-- Dependencies: 6
+-- Name: cuentas_pagar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cuentas_pagar (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_factura_compra integer,
+    fecha_credito text,
+    tiempo text,
+    plazo text,
+    monto_factura text,
+    saldo_factura text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.cuentas_pagar OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 309413)
+-- Dependencies: 6
+-- Name: detalle_cuentas_cobrar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_cuentas_cobrar (
+    id integer NOT NULL,
+    id_cuentas_cobrar integer,
+    secuencial text,
+    fecha_pago text,
+    descripcion text,
+    cuota text,
+    saldo text,
+    abono text,
+    pago text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_cuentas_cobrar OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 309448)
+-- Dependencies: 6
+-- Name: detalle_cuentas_pagar; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_cuentas_pagar (
+    id integer NOT NULL,
+    id_cuentas_pagar integer,
+    secuencial text,
+    fecha_pago text,
+    descripcion text,
+    cuota text,
+    saldo text,
+    abono text,
+    pago text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_cuentas_pagar OWNER TO postgres;
+
+--
+-- TOC entry 166 (class 1259 OID 227516)
+-- Dependencies: 6
+-- Name: detalle_egreso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_egreso (
+    id integer NOT NULL,
+    id_egreso integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_egreso OWNER TO postgres;
+
+--
+-- TOC entry 167 (class 1259 OID 227522)
+-- Dependencies: 6
+-- Name: detalle_factura_compra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_factura_compra (
+    id integer NOT NULL,
+    id_factura_compra integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_factura_compra OWNER TO postgres;
+
+--
+-- TOC entry 168 (class 1259 OID 227528)
+-- Dependencies: 6
+-- Name: detalle_factura_venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_factura_venta (
+    id integer NOT NULL,
+    id_factura_venta integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    pendientes text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_factura_venta OWNER TO postgres;
+
+--
+-- TOC entry 169 (class 1259 OID 227534)
+-- Dependencies: 6
+-- Name: detalle_guia_remision; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_guia_remision (
+    id integer NOT NULL,
+    id_guia_remision integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_guia_remision OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 227540)
+-- Dependencies: 6
+-- Name: detalle_ingreso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_ingreso (
+    id integer NOT NULL,
+    id_ingreso integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_ingreso OWNER TO postgres;
+
+--
+-- TOC entry 171 (class 1259 OID 227546)
+-- Dependencies: 6
+-- Name: detalle_inventario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_inventario (
+    id integer NOT NULL,
+    id_inventario integer,
+    id_producto integer,
+    precio_costo text,
+    precio_venta text,
+    disponibles text,
+    existencia text,
+    diferencia text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_inventario OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 227552)
+-- Dependencies: 6
+-- Name: detalle_nota_credito; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_nota_credito (
+    id integer NOT NULL,
+    id_nota_credito integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_nota_credito OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 227558)
+-- Dependencies: 2011 6
+-- Name: detalle_nota_venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_nota_venta (
+    id integer NOT NULL,
+    id_nota_venta integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    pendientes text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.detalle_nota_venta OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 227565)
+-- Dependencies: 6
+-- Name: detalle_proforma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_proforma (
+    id integer NOT NULL,
+    id_proforma integer,
+    id_producto integer,
+    cantidad text,
+    precio text,
+    descuento text,
+    total text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_proforma OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 227571)
+-- Dependencies: 6
+-- Name: detalle_retencion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE detalle_retencion (
+    id integer NOT NULL,
+    id_retencion integer,
+    id_tarifa_retencion integer,
+    base_imponible text,
+    id_tipo_retencion integer,
+    porcentaje text,
+    valor_retenido text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.detalle_retencion OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 227577)
+-- Dependencies: 6
+-- Name: egreso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE egreso (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    fecha_actual text,
+    hora_actual text,
+    origen text,
+    destino text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_egreso text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.egreso OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 227583)
+-- Dependencies: 6
+-- Name: empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE empresa (
+    id integer NOT NULL,
+    ruc text,
+    razon_social text,
+    nombre_comercial text,
+    actividad_economica text,
+    representante_legal text,
+    identificacion_representante text,
+    telefono1 text,
+    telefono2 text,
+    ciudad text,
+    direccion_matriz text,
+    direccion_establecimiento text,
+    establecimiento text,
+    punto_emision text,
+    obligacion text,
+    contribuyente text,
+    autorizacion text,
+    matriz text,
+    lote text,
+    token text,
+    clave text,
+    correo text,
+    sitio_web text,
+    slogan text,
+    imagen text,
+    observaciones text,
+    estado text,
+    feha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.empresa OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 227589)
+-- Dependencies: 6
+-- Name: factura_compra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE factura_compra (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_proveedor integer,
+    id_usuario integer,
+    fecha_emision text,
+    fecha_registro text,
+    fecha_caducidad text,
+    fecha_cancelacion text,
+    fecha_anulacion text,
+    id_tipo_comprobante integer,
+    secuencial text,
+    autorizacion text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_compra text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.factura_compra OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 227595)
+-- Dependencies: 2012 6
+-- Name: factura_venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE factura_venta (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_cliente integer,
+    fecha_emision text,
+    fecha_anulacion text,
+    fecha_autorizacion text,
+    numero_autorizacion text,
+    clave_acceso text,
+    establecimiento text,
+    punto_emision text,
+    secuencial text,
+    ambiente text,
+    emision text,
+    archivo text,
+    id_tipo_comprobante integer,
+    tipo_precio text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_venta text,
+    efectivo text,
+    cambio text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.factura_venta OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 227608)
+-- Dependencies: 6
+-- Name: formas_pago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE formas_pago (
+    id integer NOT NULL,
+    codigo text,
+    nombre_forma text,
+    moneda text,
+    tiempo text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.formas_pago OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 309432)
+-- Dependencies: 6
+-- Name: formas_pagos_compra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE formas_pagos_compra (
+    id integer NOT NULL,
+    id_factura_compra integer,
+    id_forma_pago integer,
+    valor text,
+    tiempo text,
+    plazo text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.formas_pagos_compra OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 227665)
+-- Dependencies: 6
+-- Name: formas_pagos_venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE formas_pagos_venta (
+    id integer NOT NULL,
+    id_factura_venta integer,
+    id_forma_pago integer,
+    valor text,
+    tiempo text,
+    plazo text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.formas_pagos_venta OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 227614)
+-- Dependencies: 2013 6
+-- Name: guia_remision; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE guia_remision (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_transportista integer,
+    fecha_emision text,
+    fecha_anulacion text,
+    fecha_autorizacion text,
+    numero_autorizacion text,
+    clave_acceso text,
+    establecimiento text,
+    punto_emision text,
+    secuencial text,
+    ambiente text,
+    emision text,
+    archivo text,
+    id_tipo_comprobante integer,
+    fecha_inicio text,
+    fecha_fin text,
+    placa text,
+    dir_partida text,
+    id_cliente integer,
+    dir_destinatario text,
+    motivo text,
+    ruta text,
+    doc_aduanero text,
+    id_factura_venta integer,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.guia_remision OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 227621)
+-- Dependencies: 6
+-- Name: ingreso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE ingreso (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    fecha_actual text,
+    hora_actual text,
+    origen text,
+    destino text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_ingreso text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.ingreso OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 227627)
+-- Dependencies: 6
+-- Name: inventario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE inventario (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    fecha_actual text,
+    hora_actual text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.inventario OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 227633)
+-- Dependencies: 6
+-- Name: kardex; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE kardex (
+    id integer NOT NULL,
+    id_producto integer,
+    fecha_kardex text,
+    detalle text,
+    cantidad text,
+    valor_unitario text,
+    total text,
+    saldo text,
+    origen text,
+    destino text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.kardex OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 227639)
+-- Dependencies: 6
+-- Name: marcas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE marcas (
+    id integer NOT NULL,
+    nombre_marca text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.marcas OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 227645)
+-- Dependencies: 6
+-- Name: movimientos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE movimientos (
+    id integer NOT NULL,
+    id_producto integer,
+    fecha_movimiento text,
+    saldo_inicial text,
+    entradas text,
+    salidas text,
+    saldo text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.movimientos OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 227651)
+-- Dependencies: 2014 6
+-- Name: nota_credito; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE nota_credito (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_factura_venta integer,
+    fecha_emision text,
+    fecha_anulacion text,
+    fecha_autorizacion text,
+    numero_autorizacion text,
+    clave_acceso text,
+    establecimiento text,
+    punto_emision text,
+    secuencial text,
+    ambiente text,
+    emision text,
+    archivo text,
+    id_tipo_comprobante integer,
+    tipo_precio text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_nota text,
+    motivo text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.nota_credito OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 227658)
+-- Dependencies: 2015 6
+-- Name: nota_venta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE nota_venta (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_cliente integer,
+    fecha_emision text,
+    fecha_anulacion text,
+    secuencial text,
+    id_forma_pago text,
+    tipo_precio text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_nota text,
+    efectivo text,
+    cambio text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+)
+WITH (autovacuum_enabled=true);
+
+
+ALTER TABLE public.nota_venta OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 227671)
+-- Dependencies: 6
+-- Name: privilegios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE privilegios (
+    id integer NOT NULL,
+    id_cargo integer,
+    data text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.privilegios OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 301213)
+-- Dependencies: 2017 6
+-- Name: productos; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE productos (
+    id integer NOT NULL,
+    codigo_barras text,
+    codigo text,
+    descripcion text,
+    precio_costo text,
+    utilidad_minorista text,
+    utilidad_mayorista text,
+    precio_minorista text,
+    precio_mayorista text,
+    id_tipo_producto integer,
+    id_categoria integer,
+    id_marca integer,
+    id_bodega integer,
+    id_porcentaje integer,
+    incluye_iva text,
+    stock text,
+    stock_minimo text,
+    stock_maximo text,
+    descuento text,
+    expiracion text,
+    facturar_existencia text,
+    ubicacion text,
+    series text,
+    imagen text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+)
+WITH (autovacuum_enabled=true);
+
+
+ALTER TABLE public.productos OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 243895)
+-- Dependencies: 6
+-- Name: proforma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE proforma (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_usuario integer,
+    id_cliente integer,
+    fecha_emision text,
+    secuencial text,
+    tipo_precio text,
+    subtotal text,
+    tarifa text,
+    tarifa0 text,
+    iva text,
+    total_descuento text,
+    total_proforma text,
+    observaciones text,
+    referencia text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.proforma OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 227690)
+-- Dependencies: 6
+-- Name: proveedores; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE proveedores (
+    id integer NOT NULL,
+    id_tipo_documento integer,
+    identificacion text,
+    razon_social text,
+    nombre_comercial text,
+    telefono1 text,
+    telefono2 text,
+    ciudad text,
+    direccion text,
+    correo text,
+    cupo text,
+    imagen text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.proveedores OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 227696)
+-- Dependencies: 2016 6
+-- Name: retencion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE retencion (
+    id integer NOT NULL,
+    id_empresa integer,
+    id_proveedor integer,
+    id_usuario integer,
+    fecha_emision text,
+    fecha_anulacion text,
+    fecha_autorizacion text,
+    numero_autorizacion text,
+    clave_acceso text,
+    establecimiento text,
+    punto_emision text,
+    secuencial text,
+    ambiente text,
+    emision text,
+    archivo text,
+    mes text,
+    anio text,
+    id_tipo_comprobante integer,
+    numero_comprobante text,
+    id_forma_pago integer,
+    total_retenido text,
+    estado text,
+    fecha_creacion timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.retencion OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 227703)
+-- Dependencies: 6
+-- Name: secuencia_comprobantes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE secuencia_comprobantes (
+    id integer NOT NULL,
+    secuencia_factura text,
+    secuencia_nota_credito text,
+    secuencia_nota_debito text,
+    secuencia_guia_remision text,
+    secuencia_retencion text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.secuencia_comprobantes OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 227709)
+-- Dependencies: 6
+-- Name: tarifa_impuesto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tarifa_impuesto (
+    id integer NOT NULL,
+    id_tipo_impuesto integer,
+    codigo text,
+    nombre_tarifa_impuesto text,
+    descripcion text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tarifa_impuesto OWNER TO postgres;
+
+--
+-- TOC entry 195 (class 1259 OID 227715)
+-- Dependencies: 6
+-- Name: tarifa_retencion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tarifa_retencion (
+    id integer NOT NULL,
+    id_tipo_retencion integer,
+    codigo text,
+    nombre_tarifa_retencion text,
+    descripcion text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tarifa_retencion OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 227721)
+-- Dependencies: 6
+-- Name: tipo_ambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_ambiente (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_ambiente text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_ambiente OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 227727)
+-- Dependencies: 6
+-- Name: tipo_comprobante; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_comprobante (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_comprobante text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_comprobante OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 227733)
+-- Dependencies: 6
+-- Name: tipo_documento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_documento (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_documento text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_documento OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 227739)
+-- Dependencies: 6
+-- Name: tipo_emision; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_emision (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_emision text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_emision OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 227745)
+-- Dependencies: 6
+-- Name: tipo_impuesto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_impuesto (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_impuesto text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_impuesto OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 227751)
+-- Dependencies: 6
+-- Name: tipo_producto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_producto (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_producto text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_producto OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 227757)
+-- Dependencies: 6
+-- Name: tipo_retencion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_retencion (
+    id integer NOT NULL,
+    codigo text,
+    nombre_tipo_retencion text,
+    principal text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.tipo_retencion OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 227763)
+-- Dependencies: 6
+-- Name: transaccion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE transaccion (
+    id integer NOT NULL,
+    id_usuario text,
+    comprobante text,
+    fecha_actual text,
+    hora_actual text,
+    concepto text,
+    total_debe text,
+    total_haber text,
+    saldo text,
+    id_tipo_transaccion integer,
+    num_transaccion text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.transaccion OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 227769)
+-- Dependencies: 6
+-- Name: transportistas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE transportistas (
+    id integer NOT NULL,
+    id_tipo_documento integer,
+    identificacion text,
+    razon_social text,
+    nombre_comercial text,
+    telefono1 text,
+    telefono2 text,
+    ciudad text,
+    direccion text,
+    correo text,
+    imagen text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+)
+WITH (autovacuum_enabled=true);
+
+
+ALTER TABLE public.transportistas OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 227775)
+-- Dependencies: 6
+-- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usuarios (
+    id integer NOT NULL,
+    identificacion text,
+    nombres_completos text,
+    telefono1 text,
+    telefono2 text,
+    ciudad text,
+    direccion text,
+    correo text,
+    usuario text,
+    clave text,
+    id_cargo integer,
+    imagen text,
+    observaciones text,
+    estado text,
+    fecha_creacion timestamp with time zone
+);
+
+
+ALTER TABLE public.usuarios OWNER TO postgres;
+
+--
+-- TOC entry 2283 (class 0 OID 235701)
+-- Dependencies: 206 2292
+-- Data for Name: accesos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY accesos (id, id_usuario, nombre_equipo, estado, fecha_creacion) FROM stdin;
+1	1	oskrin91	1	20:52:17-05
+\.
+
+
+--
+-- TOC entry 2285 (class 0 OID 243908)
+-- Dependencies: 208 2292
+-- Data for Name: auditoria; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auditoria (usuario_id, host, entidad, proceso, actual_value, new_values, old_values, entidad_id, fecha) FROM stdin;
+1	oskrin91	Productos	INSERT	ARETESP SURTIDOS			1	2018-07-16 19:19:08
+1	oskrin91	Productos	INSERT	MOCHILA LAPTO 15.6			2	2018-07-16 19:24:18
+1	oskrin91	Factura Venta	INSERT	Creación Factura Venta:000000986			1	2018-07-16 19:26:53
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:001-001-000000365			1	2018-07-16 22:25:23
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:000-000-000000000			2	2018-07-16 22:29:13
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:001-001-000000962			1	2018-07-16 22:33:55
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:002-001-000369874			2	2018-07-16 22:35:53
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:001-003-000022587			3	2018-07-16 22:38:46
+1	oskrin91	Factura Compra	INSERT	Creación Factura Compra:001-003-000000098			4	2018-07-16 22:47:40
+1	oskrin91	Proforma	INSERT	Creación Proforma:000000001			1	2018-07-17 10:31:41
+1	oskrin91	Clientes	INSERT	TROYA CARBAJAL SILVIO OSCAR			2	2018-07-17 23:43:16
+1	oskrin91	Proforma	INSERT	Creación Proforma:000000002			2	2018-07-17 23:44:24
+1	oskrin91	Secuencia Comprobantes	UPDATE	Configuración Secuencial			1	2018-07-18 17:56:27
+1	oskrin91	Productos	INSERT	TECLADO			3	2018-07-18 17:59:35
+1	oskrin91	Productos	UPDATE	TECLADO			3	2018-07-18 17:59:58
+1	oskrin91	Proforma	INSERT	Creación Proforma:000000003			3	2018-07-18 18:02:17
+1	oskrin91	Factura Venta	INSERT	Creación Factura Venta:000000987			2	2018-07-18 18:04:36
+1	oskrin91	Productos	UPDATE	TECLADO			3	2018-07-19 10:14:17
+\.
+
+
+--
+-- TOC entry 2238 (class 0 OID 227486)
+-- Dependencies: 161 2292
+-- Data for Name: bodegas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY bodegas (id, nombre_bodega, ubicacion_bodega, telefono_bodega, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	SIN BODEGA	SIN UBICACIÓN	000000000	Si		1	2018-06-24 21:19:43-05
+\.
+
+
+--
+-- TOC entry 2239 (class 0 OID 227492)
+-- Dependencies: 162 2292
+-- Data for Name: cargos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cargos (id, nombre_cargo, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	ADMINISTRADOR	Si		1	2017-02-14 09:08:14-05
+\.
+
+
+--
+-- TOC entry 2240 (class 0 OID 227498)
+-- Dependencies: 163 2292
+-- Data for Name: categorias; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY categorias (id, nombre_categoria, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	SIN CATEGORIA	Si		1	2018-07-08 18:26:49-05
+\.
+
+
+--
+-- TOC entry 2241 (class 0 OID 227504)
+-- Dependencies: 164 2292
+-- Data for Name: chat; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY chat (id, id_usuario, mensaje, estado, fecha_creacion) FROM stdin;
+1	1	Hola 	1	2018-07-18 17:54:43-05
+\.
+
+
+--
+-- TOC entry 2242 (class 0 OID 227510)
+-- Dependencies: 165 2292
+-- Data for Name: clientes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY clientes (id, id_tipo_documento, identificacion, razon_social, nombre_comercial, telefono1, telefono2, ciudad, direccion, correo, cupo, imagen, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	9999999999999	CONSUMIDOR FINAL	CONSUMIDOR FINAL		(099) 999-9999	OTAVALO	Otavalo	consumidor_final@gmail.com	0.00	1.jpg		1	2018-07-15 00:02:44-05
+\.
+
+
+--
+-- TOC entry 2286 (class 0 OID 260253)
+-- Dependencies: 209 2292
+-- Data for Name: cuentas_cobrar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cuentas_cobrar (id, id_empresa, id_usuario, id_factura_venta, fecha_credito, tiempo, plazo, monto_factura, saldo_factura, estado, fecha_creacion) FROM stdin;
+1	1	1	1	16/07/2018	Días	30	16.80	0.00	0	2018-07-16 19:26:53-05
+\.
+
+
+--
+-- TOC entry 2290 (class 0 OID 309440)
+-- Dependencies: 213 2292
+-- Data for Name: cuentas_pagar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cuentas_pagar (id, id_empresa, id_usuario, id_factura_compra, fecha_credito, tiempo, plazo, monto_factura, saldo_factura, estado, fecha_creacion) FROM stdin;
+2	1	1	3	16/07/2018	Meses	6	560.00	560.00	1	2018-07-16 22:38:46-05
+1	1	1	2	16/07/2018	Días	15	33.60	0.00	0	2018-07-16 22:35:53-05
+3	1	1	4	16/07/2018	Semanas	2	11.20	5.60	1	2018-07-16 22:47:40-05
+\.
+
+
+--
+-- TOC entry 2288 (class 0 OID 309413)
+-- Dependencies: 211 2292
+-- Data for Name: detalle_cuentas_cobrar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_cuentas_cobrar (id, id_cuentas_cobrar, secuencial, fecha_pago, descripcion, cuota, saldo, abono, pago, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	000000001	2018-08-15	FACTURA Nº 000000986 - Cuota Diferida	16.80	0.00	16.80	Efectivo		0	2018-07-16 00:00:00-05
+\.
+
+
+--
+-- TOC entry 2291 (class 0 OID 309448)
+-- Dependencies: 214 2292
+-- Data for Name: detalle_cuentas_pagar; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_cuentas_pagar (id, id_cuentas_pagar, secuencial, fecha_pago, descripcion, cuota, saldo, abono, pago, observaciones, estado, fecha_creacion) FROM stdin;
+2	2	000000002	2018-08-16	FACTURA Nº 001-003-000022587 - Cuota 1	93.33	93.33				1	2018-07-16 00:00:00-05
+3	2	000000003	2018-09-16	FACTURA Nº 001-003-000022587 - Cuota 2	93.33	93.33				1	2018-07-16 00:00:00-05
+4	2	000000004	2018-10-16	FACTURA Nº 001-003-000022587 - Cuota 3	93.33	93.33				1	2018-07-16 00:00:00-05
+5	2	000000005	2018-11-16	FACTURA Nº 001-003-000022587 - Cuota 4	93.33	93.33				1	2018-07-16 00:00:00-05
+6	2	000000006	2018-12-16	FACTURA Nº 001-003-000022587 - Cuota 5	93.33	93.33				1	2018-07-16 00:00:00-05
+7	2	000000007	2019-01-16	FACTURA Nº 001-003-000022587 - Cuota 6	93.33	93.33				1	2018-07-16 00:00:00-05
+9	3	000000009	2018-07-30	FACTURA Nº 001-003-000000098 - Cuota 2	5.60	5.60				1	2018-07-16 00:00:00-05
+1	1	000000001	2018-07-31	FACTURA Nº 002-001-000369874 - Cuota Diferida	33.60	0.00	33.60	Efectivo		0	2018-07-16 00:00:00-05
+8	3	000000008	2018-07-23	FACTURA Nº 001-003-000000098 - Cuota 1	5.60	0.00	5.60	Efectivo		0	2018-07-16 00:00:00-05
+\.
+
+
+--
+-- TOC entry 2243 (class 0 OID 227516)
+-- Dependencies: 166 2292
+-- Data for Name: detalle_egreso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_egreso (id, id_egreso, id_producto, cantidad, precio, descuento, total, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2244 (class 0 OID 227522)
+-- Dependencies: 167 2292
+-- Data for Name: detalle_factura_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_factura_compra (id, id_factura_compra, id_producto, cantidad, precio, descuento, total, estado, fecha_creacion) FROM stdin;
+1	1	1	1	10.000	0	10.000	1	2018-07-16 22:33:55-05
+2	2	1	3	10.000	0	30.000	1	2018-07-16 22:35:53-05
+3	3	1	50	10.000	0	500.000	1	2018-07-16 22:38:46-05
+4	4	1	1	10.000	0	10.000	1	2018-07-16 22:47:40-05
+\.
+
+
+--
+-- TOC entry 2245 (class 0 OID 227528)
+-- Dependencies: 168 2292
+-- Data for Name: detalle_factura_venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_factura_venta (id, id_factura_venta, id_producto, cantidad, precio, descuento, total, pendientes, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2246 (class 0 OID 227534)
+-- Dependencies: 169 2292
+-- Data for Name: detalle_guia_remision; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_guia_remision (id, id_guia_remision, id_producto, cantidad, precio, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2247 (class 0 OID 227540)
+-- Dependencies: 170 2292
+-- Data for Name: detalle_ingreso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_ingreso (id, id_ingreso, id_producto, cantidad, precio, descuento, total, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2248 (class 0 OID 227546)
+-- Dependencies: 171 2292
+-- Data for Name: detalle_inventario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_inventario (id, id_inventario, id_producto, precio_costo, precio_venta, disponibles, existencia, diferencia, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2249 (class 0 OID 227552)
+-- Dependencies: 172 2292
+-- Data for Name: detalle_nota_credito; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_nota_credito (id, id_nota_credito, id_producto, cantidad, precio, descuento, total, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2250 (class 0 OID 227558)
+-- Dependencies: 173 2292
+-- Data for Name: detalle_nota_venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_nota_venta (id, id_nota_venta, id_producto, cantidad, precio, descuento, total, pendientes, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2251 (class 0 OID 227565)
+-- Dependencies: 174 2292
+-- Data for Name: detalle_proforma; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_proforma (id, id_proforma, id_producto, cantidad, precio, descuento, total, estado, fecha_creacion) FROM stdin;
+1	1	1	1	15.00	0	15.00	1	2018-07-17 10:31:41-05
+2	2	1	5	15.00	0	75.00	1	2018-07-17 23:44:24-05
+3	2	2	1	25.00	0	25.00	1	2018-07-17 23:44:24-05
+4	3	3	1	10.00	0	10.00	1	2018-07-18 18:02:17-05
+\.
+
+
+--
+-- TOC entry 2252 (class 0 OID 227571)
+-- Dependencies: 175 2292
+-- Data for Name: detalle_retencion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detalle_retencion (id, id_retencion, id_tarifa_retencion, base_imponible, id_tipo_retencion, porcentaje, valor_retenido, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2253 (class 0 OID 227577)
+-- Dependencies: 176 2292
+-- Data for Name: egreso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY egreso (id, id_empresa, id_usuario, fecha_actual, hora_actual, origen, destino, subtotal, tarifa, tarifa0, iva, total_descuento, total_egreso, observaciones, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2254 (class 0 OID 227583)
+-- Dependencies: 177 2292
+-- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY empresa (id, ruc, razon_social, nombre_comercial, actividad_economica, representante_legal, identificacion_representante, telefono1, telefono2, ciudad, direccion_matriz, direccion_establecimiento, establecimiento, punto_emision, obligacion, contribuyente, autorizacion, matriz, lote, token, clave, correo, sitio_web, slogan, imagen, observaciones, estado, feha_creacion) FROM stdin;
+1	1003129903001	MONTESDEOCA LOPEZ CARLA ESTEFANIA	CONCEPTUAL BUSINESS GROUP / CORPORACION EFE - EME	ACTIVIDADES DE ASESORAMIENTO Y GESTION	MONTESDEOCA LOPEZ CARLA ESTEFANIA	1003129903001	(062) 922-670	(098) 947-5676	OTAVALO	Miguel Egas y  Morales Entre Salinas	Ibarra	001	001	NO					1.p12	ANAlogia0898			Todo en Ventas Tubos	1.png		1	2018-01-22 10:59:22-05
+\.
+
+
+--
+-- TOC entry 2255 (class 0 OID 227589)
+-- Dependencies: 178 2292
+-- Data for Name: factura_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY factura_compra (id, id_empresa, id_proveedor, id_usuario, fecha_emision, fecha_registro, fecha_caducidad, fecha_cancelacion, fecha_anulacion, id_tipo_comprobante, secuencial, autorizacion, subtotal, tarifa, tarifa0, iva, total_descuento, total_compra, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	1	1	16/07/2018	16/07/2018	16/07/2018	16/07/2018		1	001-001-000000962	36978542	10.000	10.000	0.000	1.200	0.000	11.20		1	2018-07-16 22:33:55-05
+2	1	1	1	16/07/2018	16/07/2018	16/07/2018	16/07/2018		1	002-001-000369874	63658749	30.000	30.000	0.000	3.600	0.000	33.60		1	2018-07-16 22:35:53-05
+3	1	1	1	16/07/2018	16/07/2018	16/07/2018	16/07/2018		1	001-003-000022587	36587954	500.000	500.000	0.000	60.000	0.000	560.00		1	2018-07-16 22:38:46-05
+4	1	1	1	16/07/2018	16/07/2018	16/07/2018	16/07/2018		1	001-003-000000098	362598	10.000	10.000	0.000	1.200	0.000	11.20		1	2018-07-16 22:47:40-05
+\.
+
+
+--
+-- TOC entry 2256 (class 0 OID 227595)
+-- Dependencies: 179 2292
+-- Data for Name: factura_venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY factura_venta (id, id_empresa, id_usuario, id_cliente, fecha_emision, fecha_anulacion, fecha_autorizacion, numero_autorizacion, clave_acceso, establecimiento, punto_emision, secuencial, ambiente, emision, archivo, id_tipo_comprobante, tipo_precio, subtotal, tarifa, tarifa0, iva, total_descuento, total_venta, efectivo, cambio, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2257 (class 0 OID 227608)
+-- Dependencies: 180 2292
+-- Data for Name: formas_pago; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY formas_pago (id, codigo, nombre_forma, moneda, tiempo, principal, observaciones, estado, fecha_creacion) FROM stdin;
+13	13	DEPOSITO EN CUENTA (CORRIENTE/AHORROS)	DOLAR	DÍAS	No		1	2018-02-26 17:32:03-05
+14	14	ENDOSO DE INVERSIÓN	DOLAR	DÍAS	No		1	2018-02-26 17:32:13-05
+15	15	COMPENSACIÓN DE DEUDAS	DOLAR	DÍAS	No		1	2018-02-26 17:32:22-05
+16	16	TARJETA DE DÉBITO	DOLAR	DÍAS	No		1	2018-02-26 17:32:30-05
+17	17	DINERO ELECTRÓNICO	DOLAR	DÍAS	No		1	2018-02-26 17:32:37-05
+18	18	TARJETA PREPAGO	DOLAR	DÍAS	No		1	2018-02-26 17:32:44-05
+19	19	TARJETA DE CRÉDITO	DOLAR	DÍAS	No		1	2018-02-26 17:32:53-05
+20	20	OTROS CON UTILIZACION DEL SISTEMA FINANCIERO	DOLAR	DÍAS	No		1	2018-02-26 17:33:00-05
+21	21	ENDOSO DE TÍTULOS	DOLAR	DÍAS	No		1	2018-02-26 17:33:09-05
+2	02	CHEQUE PROPIO	DOLAR	DÍAS	No		1	2018-02-26 17:28:29-05
+3	03	CHEQUE CERTIFICADO	DOLAR	DÍAS	No		1	2018-02-26 17:28:40-05
+4	04	CHEQUE DE GERENCIA	DOLAR	DÍAS	No		1	2018-02-26 17:29:39-05
+5	05	CHEQUE DEL EXTERIOR	DOLAR	DÍAS	No		1	2018-02-26 17:29:52-05
+6	06	DÉBITO DE CUENTA	DOLAR	DÍAS	No		1	2018-02-26 17:30:02-05
+7	07	TRANSFERENCIA PROPIO BANCO	DOLAR	DÍAS	No		1	2018-02-26 17:30:54-05
+8	08	TRANSFERENCIA OTRO BANCO NACIONAL	DOLAR	DÍAS	No		1	2018-02-26 17:31:05-05
+9	09	TRANSFERENCIA  BANCO EXTERIOR	DOLAR	DÍAS	No		1	2018-02-26 17:31:14-05
+11	11	TARJETA DE CRÉDITO INTERNACIONAL	DOLAR	DÍAS	No		1	2018-02-26 17:31:40-05
+12	12	GIRO	DOLAR	DÍAS	No		1	2018-02-26 17:31:49-05
+10	10	TARJETA DE CRÉDITO NACIONAL	DOLAR	DÍAS	No		0	2018-07-05 20:09:37-05
+1	01	SIN UTILIZACION DEL SISTEMA FINANCIERO	DOLAR	DÍAS	Si		1	2018-07-08 18:17:39-05
+\.
+
+
+--
+-- TOC entry 2289 (class 0 OID 309432)
+-- Dependencies: 212 2292
+-- Data for Name: formas_pagos_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY formas_pagos_compra (id, id_factura_compra, id_forma_pago, valor, tiempo, plazo, estado, fecha_creacion) FROM stdin;
+1	1	1	11.20			1	2018-07-16 22:33:55-05
+2	2	1	33.60	Días	15	1	2018-07-16 22:35:53-05
+3	3	1	560.00	Meses	6	1	2018-07-16 22:38:46-05
+4	4	1	11.20	Semanas	2	1	2018-07-16 22:47:40-05
+\.
+
+
+--
+-- TOC entry 2266 (class 0 OID 227665)
+-- Dependencies: 189 2292
+-- Data for Name: formas_pagos_venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY formas_pagos_venta (id, id_factura_venta, id_forma_pago, valor, tiempo, plazo, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2258 (class 0 OID 227614)
+-- Dependencies: 181 2292
+-- Data for Name: guia_remision; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY guia_remision (id, id_empresa, id_usuario, id_transportista, fecha_emision, fecha_anulacion, fecha_autorizacion, numero_autorizacion, clave_acceso, establecimiento, punto_emision, secuencial, ambiente, emision, archivo, id_tipo_comprobante, fecha_inicio, fecha_fin, placa, dir_partida, id_cliente, dir_destinatario, motivo, ruta, doc_aduanero, id_factura_venta, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2259 (class 0 OID 227621)
+-- Dependencies: 182 2292
+-- Data for Name: ingreso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY ingreso (id, id_empresa, id_usuario, fecha_actual, hora_actual, origen, destino, subtotal, tarifa, tarifa0, iva, total_descuento, total_ingreso, observaciones, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2260 (class 0 OID 227627)
+-- Dependencies: 183 2292
+-- Data for Name: inventario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY inventario (id, id_empresa, id_usuario, fecha_actual, hora_actual, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2261 (class 0 OID 227633)
+-- Dependencies: 184 2292
+-- Data for Name: kardex; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY kardex (id, id_producto, fecha_kardex, detalle, cantidad, valor_unitario, total, saldo, origen, destino, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2262 (class 0 OID 227639)
+-- Dependencies: 185 2292
+-- Data for Name: marcas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY marcas (id, nombre_marca, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	SIN MARCA	Si		1	2018-03-07 14:43:40-05
+\.
+
+
+--
+-- TOC entry 2263 (class 0 OID 227645)
+-- Dependencies: 186 2292
+-- Data for Name: movimientos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY movimientos (id, id_producto, fecha_movimiento, saldo_inicial, entradas, salidas, saldo, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2264 (class 0 OID 227651)
+-- Dependencies: 187 2292
+-- Data for Name: nota_credito; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY nota_credito (id, id_empresa, id_usuario, id_factura_venta, fecha_emision, fecha_anulacion, fecha_autorizacion, numero_autorizacion, clave_acceso, establecimiento, punto_emision, secuencial, ambiente, emision, archivo, id_tipo_comprobante, tipo_precio, subtotal, tarifa, tarifa0, iva, total_descuento, total_nota, motivo, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2265 (class 0 OID 227658)
+-- Dependencies: 188 2292
+-- Data for Name: nota_venta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY nota_venta (id, id_empresa, id_usuario, id_cliente, fecha_emision, fecha_anulacion, secuencial, id_forma_pago, tipo_precio, subtotal, tarifa, tarifa0, iva, total_descuento, total_nota, efectivo, cambio, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2267 (class 0 OID 227671)
+-- Dependencies: 190 2292
+-- Data for Name: privilegios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY privilegios (id, id_cargo, data, estado, fecha_creacion) FROM stdin;
+1	1	["require","empresa","auditoria","tipo_ambiente","tipo_emision","tipo_comprobante","tipo_documento","tipo_producto","tipo_impuesto","tarifa_impuesto","formas_pago","secuencia_comprobantes","categorias","marcas","bodegas","clientes","proveedores","transportistas","productos","inventario","movimientos","proformas","factura_compra","factura_venta","nota_venta","retencion","nota_credito","guia_remision","ingresos","egresos","cuentas_cobrar","cuentas_pagar","kardex","cuenta","cargos","usuarios","privilegios","reporte_varios","reporte_ventas"]	1	2018-05-02 12:11:15-05
+\.
+
+
+--
+-- TOC entry 2287 (class 0 OID 301213)
+-- Dependencies: 210 2292
+-- Data for Name: productos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY productos (id, codigo_barras, codigo, descripcion, precio_costo, utilidad_minorista, utilidad_mayorista, precio_minorista, precio_mayorista, id_tipo_producto, id_categoria, id_marca, id_bodega, id_porcentaje, incluye_iva, stock, stock_minimo, stock_maximo, descuento, expiracion, facturar_existencia, ubicacion, series, imagen, observaciones, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2284 (class 0 OID 243895)
+-- Dependencies: 207 2292
+-- Data for Name: proforma; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY proforma (id, id_empresa, id_usuario, id_cliente, fecha_emision, secuencial, tipo_precio, subtotal, tarifa, tarifa0, iva, total_descuento, total_proforma, observaciones, referencia, estado, fecha_creacion) FROM stdin;
+1	1	1	1	17/07/2018	000000001	MINORISTA	15.000	15.000	0.000	1.800	0.000	16.80			1	2018-07-17 10:31:41-05
+2	1	1	2	17/07/2018	000000002	MINORISTA	100.000	100.000	0.000	12.000	0.000	112.00			1	2018-07-17 23:44:24-05
+3	1	1	2	18/07/2018	000000003	MINORISTA	10.000	10.000	0.000	1.200	0.000	11.20			1	2018-07-18 18:02:17-05
+\.
+
+
+--
+-- TOC entry 2268 (class 0 OID 227690)
+-- Dependencies: 191 2292
+-- Data for Name: proveedores; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY proveedores (id, id_tipo_documento, identificacion, razon_social, nombre_comercial, telefono1, telefono2, ciudad, direccion, correo, cupo, imagen, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	9999999999999	CONSUMIDOR FINAL	CONSUMIDOR FINAL		(099) 999-9999	OTAVALO	Otavalo	consumidor_finail.com	0.00	defaul.jpg		1	2018-07-08 22:34:30-05
+\.
+
+
+--
+-- TOC entry 2269 (class 0 OID 227696)
+-- Dependencies: 192 2292
+-- Data for Name: retencion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY retencion (id, id_empresa, id_proveedor, id_usuario, fecha_emision, fecha_anulacion, fecha_autorizacion, numero_autorizacion, clave_acceso, establecimiento, punto_emision, secuencial, ambiente, emision, archivo, mes, anio, id_tipo_comprobante, numero_comprobante, id_forma_pago, total_retenido, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2270 (class 0 OID 227703)
+-- Dependencies: 193 2292
+-- Data for Name: secuencia_comprobantes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY secuencia_comprobantes (id, secuencia_factura, secuencia_nota_credito, secuencia_nota_debito, secuencia_guia_remision, secuencia_retencion, estado, fecha_creacion) FROM stdin;
+1	993	61	6	37	58	1	2018-07-18 17:56:27-05
+\.
+
+
+--
+-- TOC entry 2271 (class 0 OID 227709)
+-- Dependencies: 194 2292
+-- Data for Name: tarifa_impuesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tarifa_impuesto (id, id_tipo_impuesto, codigo, nombre_tarifa_impuesto, descripcion, estado, fecha_creacion) FROM stdin;
+1	1	0	0	0 %	1	2018-02-26 11:22:30-05
+2	1	2	12	GRAVA IVA	1	2018-02-26 11:24:09-05
+4	1	6	0	NO OBJETO DE IMPUESTO	1	2018-02-26 11:24:58-05
+5	1	7	0	EXENTO DE IVA	1	2018-02-26 11:25:20-05
+6	2	3023	150	Productos del tabaco y sucedáneos del tabaco (abarcan los productos preparados totalmente o en parte utilizando como materia prima hojas de tabaco y destinados a ser fumados, chupados, inhalados, mascados o utilizados como rapé)	1	2018-02-26 11:26:12-05
+7	2	3610	20	Perfumes y aguas de tocador	1	2018-02-26 11:26:37-05
+8	3	3620	35	VideoJuegos	1	2018-02-26 11:27:33-05
+9	3	5001		BOTELLAS PLASTICAS NO RETORNABLES	1	2018-06-24 21:31:35-05
+3	1	3	14	GRAVA IVA	0	2018-07-08 18:15:57-05
+\.
+
+
+--
+-- TOC entry 2272 (class 0 OID 227715)
+-- Dependencies: 195 2292
+-- Data for Name: tarifa_retencion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tarifa_retencion (id, id_tipo_retencion, codigo, nombre_tarifa_retencion, descripcion, estado, fecha_creacion) FROM stdin;
+2	2	10	20	20% Retención IVA	1	2018-02-26 16:48:48-05
+4	2	11	50	50% Retención IVA	1	2018-02-26 16:49:43-05
+5	2	2	70	70% Retención IVA	1	2018-02-26 16:50:02-05
+6	2	3	100	100% Retención IVA	1	2018-02-26 16:55:22-05
+7	2	7	0	0% Retención IVA	1	2018-02-26 16:55:59-05
+8	2	8	0	0% No procede Retención	1	2018-02-26 16:56:23-05
+9	1	303	10	Honorarios profesionales y demás pagos por servicios relacionados con el título profesional	1	2018-02-26 16:56:56-05
+11	2	6	100	100% Valor Retenido Voceadores Varios	1	2018-02-26 16:59:05-05
+3	2	1	30	30% Retención IVA	1	2018-02-26 16:49:20-05
+1	2	9	10	10% Retención IVA	1	2018-02-26 17:07:10-05
+10	2	5	100	100% Valor Retenido Distribuidor	1	2018-03-07 12:46:24-05
+\.
+
+
+--
+-- TOC entry 2273 (class 0 OID 227721)
+-- Dependencies: 196 2292
+-- Data for Name: tipo_ambiente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_ambiente (id, codigo, nombre_tipo_ambiente, principal, observaciones, estado, fecha_creacion) FROM stdin;
+2	2	PRODUCCIÓN	No		0	2018-07-05 18:08:26-05
+1	1	PRUEBAS	Si		1	2018-07-08 18:00:00-05
+\.
+
+
+--
+-- TOC entry 2274 (class 0 OID 227727)
+-- Dependencies: 197 2292
+-- Data for Name: tipo_comprobante; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_comprobante (id, codigo, nombre_tipo_comprobante, principal, observaciones, estado, fecha_creacion) FROM stdin;
+2	04	NOTA CRÉDITO	No		1	2017-02-21 15:34:31-05
+3	05	NOTA DÉBITO	No		1	2017-02-21 15:35:55-05
+5	07	COMPROBANTE DE RETENCIÓN	No		1	2018-06-24 21:23:15-05
+1	01	FACTURA	Si		1	2018-07-05 18:24:03-05
+4	06	GUÍA DE REMISIÓN	No		1	2018-07-08 18:06:32-05
+\.
+
+
+--
+-- TOC entry 2275 (class 0 OID 227733)
+-- Dependencies: 198 2292
+-- Data for Name: tipo_documento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_documento (id, codigo, nombre_tipo_documento, principal, observaciones, estado, fecha_creacion) FROM stdin;
+4	07	VENTA A CONSUMIDOR FINAL *	No		1	2018-01-31 10:46:34-05
+5	08	IDENTIFICACIÓN DEL EXTERIOR *	No		1	2018-01-31 10:46:47-05
+2	05	CÉDULA	Si		1	2018-01-31 11:10:58-05
+6	09	PLACA	No		1	2018-06-24 21:25:20-05
+1	04	RUC	No		1	2018-07-05 19:32:36-05
+3	06	PASAPORTE	No		1	2018-07-08 18:07:45-05
+\.
+
+
+--
+-- TOC entry 2276 (class 0 OID 227739)
+-- Dependencies: 199 2292
+-- Data for Name: tipo_emision; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_emision (id, codigo, nombre_tipo_emision, principal, observaciones, estado, fecha_creacion) FROM stdin;
+2	2	Emisión por Indisponiblidad del Sistema	No		0	2018-03-07 12:07:03-05
+1	1	Emisión Normal	Si		1	2018-07-08 18:02:24-05
+\.
+
+
+--
+-- TOC entry 2277 (class 0 OID 227745)
+-- Dependencies: 200 2292
+-- Data for Name: tipo_impuesto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_impuesto (id, codigo, nombre_tipo_impuesto, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	2	IVA	No		1	2018-02-26 11:19:30-05
+3	5	IRBPNR	No		1	2018-06-24 21:30:06-05
+2	3	ICE	No		1	2018-07-08 18:12:26-05
+\.
+
+
+--
+-- TOC entry 2278 (class 0 OID 227751)
+-- Dependencies: 201 2292
+-- Data for Name: tipo_producto; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_producto (id, codigo, nombre_tipo_producto, principal, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	PRODUCTO	Si		1	2018-02-01 12:07:15-05
+2	2	BIEN	No		1	2018-02-01 11:35:16-05
+3	3	SERVICIOS	No		1	2018-07-08 18:10:06-05
+\.
+
+
+--
+-- TOC entry 2279 (class 0 OID 227757)
+-- Dependencies: 202 2292
+-- Data for Name: tipo_retencion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tipo_retencion (id, codigo, nombre_tipo_retencion, principal, observaciones, estado, fecha_creacion) FROM stdin;
+2	2	IVA	No		1	2018-02-26 16:14:51-05
+3	6	ISD	No		1	2018-03-07 12:26:03-05
+1	1	RENTA	No		1	2018-02-26 16:14:36-05
+\.
+
+
+--
+-- TOC entry 2280 (class 0 OID 227763)
+-- Dependencies: 203 2292
+-- Data for Name: transaccion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY transaccion (id, id_usuario, comprobante, fecha_actual, hora_actual, concepto, total_debe, total_haber, saldo, id_tipo_transaccion, num_transaccion, estado, fecha_creacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2281 (class 0 OID 227769)
+-- Dependencies: 204 2292
+-- Data for Name: transportistas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY transportistas (id, id_tipo_documento, identificacion, razon_social, nombre_comercial, telefono1, telefono2, ciudad, direccion, correo, imagen, observaciones, estado, fecha_creacion) FROM stdin;
+1	1	9999999999999	CONSUMIDOR FINAL	CONSUMIDOR FINAL		(099) 999-9999	OTAVALO	Otavalo	consumidor_final	./fotos/defaul.jpg		1	2018-07-08 22:35:21-05
+2	2	1004358584	TROYA CARBAJAL SILVIO OSCAR	TROYA CARBAJAL SILVIO OSCAR		(099) 999-9999	IMBABURA/OTAVALO/SAN LUIS	MIGUEL EGAS 00 CARDON		2.png		1	2018-07-15 09:03:59-05
+\.
+
+
+--
+-- TOC entry 2282 (class 0 OID 227775)
+-- Dependencies: 205 2292
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usuarios (id, identificacion, nombres_completos, telefono1, telefono2, ciudad, direccion, correo, usuario, clave, id_cargo, imagen, observaciones, estado, fecha_creacion) FROM stdin;
+1	1004358584	Administrador		(098) 947-5676	OTAVALO	Miguel Egas y Morales	oskrs11@hotmail.com	Admin	e10adc3949ba59abbe56e057f20f883e	1	1.png		1	2018-08-01 16:05:29-05
+\.
+
+
+--
+-- TOC entry 2109 (class 2606 OID 235708)
+-- Dependencies: 206 206 2293
+-- Name: accesos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY accesos
+    ADD CONSTRAINT accesos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2119 (class 2606 OID 309439)
+-- Dependencies: 212 212 2293
+-- Name: asignar_pago_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY formas_pagos_compra
+    ADD CONSTRAINT asignar_pago_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2075 (class 2606 OID 227782)
+-- Dependencies: 189 189 2293
+-- Name: asignar_pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY formas_pagos_venta
+    ADD CONSTRAINT asignar_pago_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2019 (class 2606 OID 227784)
+-- Dependencies: 161 161 2293
+-- Name: bodegas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY bodegas
+    ADD CONSTRAINT bodegas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2021 (class 2606 OID 227786)
+-- Dependencies: 162 162 2293
+-- Name: cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cargos
+    ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2023 (class 2606 OID 227788)
+-- Dependencies: 163 163 2293
+-- Name: categorias_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY categorias
+    ADD CONSTRAINT categorias_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2025 (class 2606 OID 227790)
+-- Dependencies: 164 164 2293
+-- Name: chat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY chat
+    ADD CONSTRAINT chat_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2027 (class 2606 OID 227792)
+-- Dependencies: 165 165 2293
+-- Name: clientes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY clientes
+    ADD CONSTRAINT clientes_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2117 (class 2606 OID 309420)
+-- Dependencies: 211 211 2293
+-- Name: detalle_cuentas_cobrar_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_cuentas_cobrar
+    ADD CONSTRAINT detalle_cuentas_cobrar_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2123 (class 2606 OID 309455)
+-- Dependencies: 214 214 2293
+-- Name: detalle_cuentas_pagar_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_cuentas_pagar
+    ADD CONSTRAINT detalle_cuentas_pagar_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2029 (class 2606 OID 227794)
+-- Dependencies: 166 166 2293
+-- Name: detalle_egreso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_egreso
+    ADD CONSTRAINT detalle_egreso_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2031 (class 2606 OID 227796)
+-- Dependencies: 167 167 2293
+-- Name: detalle_factura_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_factura_compra
+    ADD CONSTRAINT detalle_factura_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2033 (class 2606 OID 227798)
+-- Dependencies: 168 168 2293
+-- Name: detalle_factura_venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_factura_venta
+    ADD CONSTRAINT detalle_factura_venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2035 (class 2606 OID 227800)
+-- Dependencies: 169 169 2293
+-- Name: detalle_guia_remision_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_guia_remision
+    ADD CONSTRAINT detalle_guia_remision_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2037 (class 2606 OID 227802)
+-- Dependencies: 170 170 2293
+-- Name: detalle_ingresos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_ingreso
+    ADD CONSTRAINT detalle_ingresos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2039 (class 2606 OID 227804)
+-- Dependencies: 171 171 2293
+-- Name: detalle_inventario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_inventario
+    ADD CONSTRAINT detalle_inventario_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2043 (class 2606 OID 227806)
+-- Dependencies: 173 173 2293
+-- Name: detalle_nota_venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_nota_venta
+    ADD CONSTRAINT detalle_nota_venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2045 (class 2606 OID 227808)
+-- Dependencies: 174 174 2293
+-- Name: detalle_proforma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_proforma
+    ADD CONSTRAINT detalle_proforma_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2047 (class 2606 OID 227810)
+-- Dependencies: 175 175 2293
+-- Name: detalle_retencion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_retencion
+    ADD CONSTRAINT detalle_retencion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2049 (class 2606 OID 227812)
+-- Dependencies: 176 176 2293
+-- Name: egresos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY egreso
+    ADD CONSTRAINT egresos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2051 (class 2606 OID 227814)
+-- Dependencies: 177 177 2293
+-- Name: empresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY empresa
+    ADD CONSTRAINT empresa_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2053 (class 2606 OID 227816)
+-- Dependencies: 178 178 2293
+-- Name: factura_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY factura_compra
+    ADD CONSTRAINT factura_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2055 (class 2606 OID 227818)
+-- Dependencies: 179 179 2293
+-- Name: factura_venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY factura_venta
+    ADD CONSTRAINT factura_venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2113 (class 2606 OID 260260)
+-- Dependencies: 209 209 2293
+-- Name: fk_cuentas_cobrar; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cuentas_cobrar
+    ADD CONSTRAINT fk_cuentas_cobrar PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2121 (class 2606 OID 309447)
+-- Dependencies: 213 213 2293
+-- Name: fk_cuentas_pagar; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cuentas_pagar
+    ADD CONSTRAINT fk_cuentas_pagar PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2057 (class 2606 OID 227823)
+-- Dependencies: 180 180 2293
+-- Name: formas_pago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY formas_pago
+    ADD CONSTRAINT formas_pago_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2059 (class 2606 OID 227825)
+-- Dependencies: 181 181 2293
+-- Name: guia_remision_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY guia_remision
+    ADD CONSTRAINT guia_remision_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2061 (class 2606 OID 227827)
+-- Dependencies: 182 182 2293
+-- Name: ingresos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY ingreso
+    ADD CONSTRAINT ingresos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2063 (class 2606 OID 227829)
+-- Dependencies: 183 183 2293
+-- Name: inventario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY inventario
+    ADD CONSTRAINT inventario_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2065 (class 2606 OID 227831)
+-- Dependencies: 184 184 2293
+-- Name: kardex_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY kardex
+    ADD CONSTRAINT kardex_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2067 (class 2606 OID 227833)
+-- Dependencies: 185 185 2293
+-- Name: marcas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY marcas
+    ADD CONSTRAINT marcas_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2069 (class 2606 OID 227835)
+-- Dependencies: 186 186 2293
+-- Name: movimientos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY movimientos
+    ADD CONSTRAINT movimientos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2071 (class 2606 OID 227837)
+-- Dependencies: 187 187 2293
+-- Name: nota_credito_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY nota_credito
+    ADD CONSTRAINT nota_credito_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2073 (class 2606 OID 227839)
+-- Dependencies: 188 188 2293
+-- Name: nota_venta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY nota_venta
+    ADD CONSTRAINT nota_venta_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2041 (class 2606 OID 227841)
+-- Dependencies: 172 172 2293
+-- Name: pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY detalle_nota_credito
+    ADD CONSTRAINT pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2077 (class 2606 OID 227843)
+-- Dependencies: 190 190 2293
+-- Name: privilegios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY privilegios
+    ADD CONSTRAINT privilegios_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2115 (class 2606 OID 301221)
+-- Dependencies: 210 210 2293
+-- Name: productos_pkey1; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY productos
+    ADD CONSTRAINT productos_pkey1 PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2111 (class 2606 OID 243902)
+-- Dependencies: 207 207 2293
+-- Name: proforma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY proforma
+    ADD CONSTRAINT proforma_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2079 (class 2606 OID 227856)
+-- Dependencies: 191 191 2293
+-- Name: proveedores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY proveedores
+    ADD CONSTRAINT proveedores_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2081 (class 2606 OID 227858)
+-- Dependencies: 192 192 2293
+-- Name: retencion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY retencion
+    ADD CONSTRAINT retencion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2083 (class 2606 OID 227860)
+-- Dependencies: 193 193 2293
+-- Name: seciencia_comprobantes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY secuencia_comprobantes
+    ADD CONSTRAINT seciencia_comprobantes_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2085 (class 2606 OID 227862)
+-- Dependencies: 194 194 2293
+-- Name: tarifa_impuesto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tarifa_impuesto
+    ADD CONSTRAINT tarifa_impuesto_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2087 (class 2606 OID 227864)
+-- Dependencies: 195 195 2293
+-- Name: tarifa_retencion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tarifa_retencion
+    ADD CONSTRAINT tarifa_retencion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2089 (class 2606 OID 227866)
+-- Dependencies: 196 196 2293
+-- Name: tipo_ambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_ambiente
+    ADD CONSTRAINT tipo_ambiente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2091 (class 2606 OID 227868)
+-- Dependencies: 197 197 2293
+-- Name: tipo_comprobante_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_comprobante
+    ADD CONSTRAINT tipo_comprobante_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2093 (class 2606 OID 227871)
+-- Dependencies: 198 198 2293
+-- Name: tipo_documento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_documento
+    ADD CONSTRAINT tipo_documento_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2095 (class 2606 OID 227873)
+-- Dependencies: 199 199 2293
+-- Name: tipo_emision_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_emision
+    ADD CONSTRAINT tipo_emision_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2097 (class 2606 OID 227875)
+-- Dependencies: 200 200 2293
+-- Name: tipo_impuesto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_impuesto
+    ADD CONSTRAINT tipo_impuesto_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2099 (class 2606 OID 227877)
+-- Dependencies: 201 201 2293
+-- Name: tipo_producto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_producto
+    ADD CONSTRAINT tipo_producto_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2101 (class 2606 OID 227879)
+-- Dependencies: 202 202 2293
+-- Name: tipo_retencion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_retencion
+    ADD CONSTRAINT tipo_retencion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2103 (class 2606 OID 227881)
+-- Dependencies: 203 203 2293
+-- Name: transaccion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY transaccion
+    ADD CONSTRAINT transaccion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2105 (class 2606 OID 227883)
+-- Dependencies: 204 204 2293
+-- Name: transportista_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY transportistas
+    ADD CONSTRAINT transportista_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2107 (class 2606 OID 227885)
+-- Dependencies: 205 205 2293
+-- Name: usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usuarios
+    ADD CONSTRAINT usuarios_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2130 (class 2606 OID 227886)
+-- Dependencies: 2070 187 172 2293
+-- Name: fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_nota_credito
+    ADD CONSTRAINT fk FOREIGN KEY (id_nota_credito) REFERENCES nota_credito(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2135 (class 2606 OID 309421)
+-- Dependencies: 209 2112 211 2293
+-- Name: fk_cuentas_cobrar; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_cuentas_cobrar
+    ADD CONSTRAINT fk_cuentas_cobrar FOREIGN KEY (id_cuentas_cobrar) REFERENCES cuentas_cobrar(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2136 (class 2606 OID 309456)
+-- Dependencies: 213 2120 214 2293
+-- Name: fk_cuentas_pagar; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_cuentas_pagar
+    ADD CONSTRAINT fk_cuentas_pagar FOREIGN KEY (id_cuentas_pagar) REFERENCES cuentas_pagar(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2124 (class 2606 OID 227891)
+-- Dependencies: 166 2048 176 2293
+-- Name: fk_egreso; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_egreso
+    ADD CONSTRAINT fk_egreso FOREIGN KEY (id_egreso) REFERENCES egreso(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2125 (class 2606 OID 227896)
+-- Dependencies: 167 2052 178 2293
+-- Name: fk_factura_compra; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_factura_compra
+    ADD CONSTRAINT fk_factura_compra FOREIGN KEY (id_factura_compra) REFERENCES factura_compra(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2126 (class 2606 OID 227901)
+-- Dependencies: 168 2054 179 2293
+-- Name: fk_factura_venta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_factura_venta
+    ADD CONSTRAINT fk_factura_venta FOREIGN KEY (id_factura_venta) REFERENCES factura_venta(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2127 (class 2606 OID 227906)
+-- Dependencies: 169 2058 181 2293
+-- Name: fk_guia; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_guia_remision
+    ADD CONSTRAINT fk_guia FOREIGN KEY (id_guia_remision) REFERENCES guia_remision(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2128 (class 2606 OID 227911)
+-- Dependencies: 2060 182 170 2293
+-- Name: fk_ingreso; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_ingreso
+    ADD CONSTRAINT fk_ingreso FOREIGN KEY (id_ingreso) REFERENCES ingreso(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2129 (class 2606 OID 227916)
+-- Dependencies: 183 2062 171 2293
+-- Name: fk_inventario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_inventario
+    ADD CONSTRAINT fk_inventario FOREIGN KEY (id_inventario) REFERENCES inventario(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2131 (class 2606 OID 227921)
+-- Dependencies: 2072 188 173 2293
+-- Name: fk_nota_venta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_nota_venta
+    ADD CONSTRAINT fk_nota_venta FOREIGN KEY (id_nota_venta) REFERENCES nota_venta(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2132 (class 2606 OID 243903)
+-- Dependencies: 207 174 2110 2293
+-- Name: fk_proforma; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_proforma
+    ADD CONSTRAINT fk_proforma FOREIGN KEY (id_proforma) REFERENCES proforma(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2133 (class 2606 OID 227931)
+-- Dependencies: 175 2080 192 2293
+-- Name: fk_retencion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detalle_retencion
+    ADD CONSTRAINT fk_retencion FOREIGN KEY (id_retencion) REFERENCES retencion(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2134 (class 2606 OID 235709)
+-- Dependencies: 205 206 2106 2293
+-- Name: fk_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY accesos
+    ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2298 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- TOC entry 2300 (class 0 OID 0)
+-- Dependencies: 173
+-- Name: detalle_nota_venta; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE detalle_nota_venta FROM PUBLIC;
+REVOKE ALL ON TABLE detalle_nota_venta FROM postgres;
+GRANT ALL ON TABLE detalle_nota_venta TO postgres;
+
+
+--
+-- TOC entry 2301 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: nota_venta; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE nota_venta FROM PUBLIC;
+REVOKE ALL ON TABLE nota_venta FROM postgres;
+GRANT ALL ON TABLE nota_venta TO postgres;
+
+
+--
+-- TOC entry 2302 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: productos; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE productos FROM PUBLIC;
+REVOKE ALL ON TABLE productos FROM postgres;
+GRANT ALL ON TABLE productos TO postgres;
+
+
+-- Completed on 2018-08-03 13:05:16
+
+--
+-- PostgreSQL database dump complete
+--
+

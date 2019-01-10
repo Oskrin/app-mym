@@ -1,0 +1,153 @@
+<div class="main-content">	
+	<div class="main-content-inner">
+	    <div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+			</script>
+
+			<ul class="breadcrumb">
+				<li>
+					<i class="ace-icon fa fa-home home-icon"></i>
+					<a href="#/">Inicio</a>
+				</li>
+
+				<li class="active">Ingesos</li>
+				<li class="active">Clientes</li>
+			</ul>
+		</div>
+
+	    <div class="page-content">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<i class="fa fa-edit"></i> Perfil Cliente
+						</div>
+
+						<div class="panel-body">
+							<form class="form-horizontal" name="form_clientes" id="form_clientes" autocomplete="off">
+
+						    	<div class="col-md-12">
+					    			<ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="tabCliente">
+										<li class="active">
+											<a data-toggle="tab" href="#informacion">Información Básica</a>
+										</li>
+									</ul>
+
+									<div class="tab-content">
+										&nbsp;	
+										<div id="informacion" class="tab-pane in active">
+											<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Nombres:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<input type="text" name="nombres" id="nombres" class="form-control" onkeyup="this.value = this.value.toUpperCase();" placeholder="Nombres" />
+														<input type="hidden" name="id_cliente" id="id_cliente" class="form-control"  />
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Apellidos:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<input type="text" name="apellidos" id="apellidos" class="form-control" onkeyup="this.value = this.value.toUpperCase();"  placeholder="Apellidos" />
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Dirección:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<input type="text" name="direccion" id="direccion" class="form-control" placeholder="Dirección" />
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Teléfono:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<span class="block input-icon">
+															<input type="text" name="telefono" id="telefono" class="form-control" placeholder="Teléfono" />
+															<i class="ace-icon fa fa-phone"></i>
+											            </span>
+													</div>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Correo:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<span class="block input-icon">
+															<input type="text" name="correo" id="correo" class="form-control" placeholder="Correo" />
+															<i class="ace-icon fa fa-envelope"></i>
+											            </span>
+													</div>
+												</div>
+											</div>
+
+											<!--<div class="form-group">
+												<label class="control-label col-sm-3 bolder">Contraseña:</label>
+												<div class="col-sm-7">
+													<div class="clearfix">
+														<input type="password" name="clave" id="clave" class="form-control" placeholder="Contraseña" />
+													</div>
+												</div>
+											</div> -->
+
+											<div class="clearfix form-actions center">
+												<div class="col-md-12">
+													<!--<button type="button" name="btn_0" id="btn_0" class="btn btn-primary" data-toggle="tooltip" title="Registrar Cliente">
+														<i class="ace-icon fa fa-save bigger-110"></i>
+														Guardar
+													</button>
+
+													<button type="button" name="btn_1" id="btn_1" class="btn btn-primary" data-toggle="tooltip" title="Modificar Cliente">
+														<i class="ace-icon fa fa-pencil-square-o bigger-110"></i>
+														Modificar
+													</button>-->
+
+													<button type="button" name="btn_2" id="btn_2" class="btn btn-primary" data-toggle="tooltip" title="Buscar Cliente">
+														<i class="ace-icon fa fa-search bigger-110"></i>
+														Clientes
+													</button>
+
+													<button type="button" name="btn_3" id="btn_3" class="btn btn-primary" data-toggle="tooltip" title="Actualizar">
+														<i class="ace-icon fa fa-refresh bigger-110"></i>
+														Actualizar
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal">
+    <div class="modal-dialog modal-lg">
+      	<div class="modal-content">
+	        <div class="modal-header">
+	          	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          	<h4 class="modal-title">BUSCAR CLIENTES</h4>
+	        </div>
+
+	        <div class="modal-body">
+	            <table id="table"></table>
+				<div id="pager"></div>
+	        </div>
+	        <div class="modal-footer">
+	          	<button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="tooltip" title="Cerrar ventana">Cerrar</button>
+	        </div>
+      	</div>
+    </div>
+</div>
